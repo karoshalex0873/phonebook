@@ -6,12 +6,12 @@ def show(request):
     query = request.GET.get('q', '')  # Get the search query from the URL
     if query:
         all_list = User.objects.filter(
-            Q(First_Name__icontains=query) | 
+            Q(First_Name__icontains=query) |
             Q(Last_Name__icontains=query) |
             Q(Email__icontains=query)
         ).order_by('First_Name')  # Filter records based on the query
     else:
-        all_list = User.objects.all().order_by('First_Name')  # 
+        all_list = User.objects.all().order_by('First_Name')
 
     return render(request, 'show.html', {'users': all_list, 'search_query': query})
 
@@ -42,7 +42,6 @@ def Spe_User(request):
 
 def edit_user(request ,user_id):
     user=get_object_or_404(User, id=user_id)
-
     if request.method == 'POST':
         user.First_Name = request.POST['first_name']
         user.Last_Name = request.POST['last_name']
@@ -50,4 +49,10 @@ def edit_user(request ,user_id):
         user.Email = request.POST['email']
         user.save()
         return redirect('show')
-    return render(request, 'index.html', {'user': user})
+    return render(request, 'edit.html', {'user': user})
+
+def edit(request):
+    return render(request,'edit.html')
+
+def home(request):
+    return render(request,'home.html')
